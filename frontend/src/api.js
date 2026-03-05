@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000",
-  baseURL: "https://omnitaas-task.onrender.com",
+  baseURL: "https://omniitaas-task.onrender.com"
 });
 
 export default API;
