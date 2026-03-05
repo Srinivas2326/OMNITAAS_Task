@@ -3,17 +3,14 @@ const cors = require("cors");
 
 const app = express();
 
-// Allow requests from anywhere (safe for this test project)
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
-}));
+// Allow all origins (for this test project)
+app.use(cors());
 
 app.use(express.json());
 
 // Login API
 app.post("/login", (req, res) => {
+
   const { username, password } = req.body;
 
   if (username === "admin" && password === "admin") {
@@ -26,6 +23,7 @@ app.post("/login", (req, res) => {
   return res.status(401).json({
     message: "Invalid username or password"
   });
+
 });
 
 const PORT = process.env.PORT || 5000;
