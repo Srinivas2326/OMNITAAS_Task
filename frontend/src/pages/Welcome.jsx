@@ -8,10 +8,8 @@ function Welcome() {
 
   const handleLogout = () => {
 
-    // remove stored username
     localStorage.removeItem("username");
 
-    // redirect to login page
     navigate("/");
 
   };
