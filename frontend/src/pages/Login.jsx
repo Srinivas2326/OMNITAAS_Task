@@ -11,37 +11,48 @@ function Login() {
 
   const navigate = useNavigate();
 
+  // Load saved username
   useEffect(() => {
-
     const savedUser = localStorage.getItem("username");
-
     if (savedUser) {
       setUsername(savedUser);
     }
-
   }, []);
 
   const handleLogin = async (e) => {
-
     e.preventDefault();
+
+    setError("");
 
     try {
 
-      const res = await API.post("/login", {
-        username,
-        password
+      const response = await API.post("/login", {
+        username: username,
+        password: password
       });
 
-      localStorage.setItem("username", res.data.username);
+      // success
+      if (response.status === 200) {
 
-      navigate("/welcome");
+        localStorage.setItem("username", response.data.username);
 
-    } catch (err) {
+        navigate("/welcome");
 
-      setError("Invalid username or password");
+      }
+
+    } catch (error) {
+
+      // backend error message
+      if (error.response) {
+        setError(error.response.data.message);
+      } 
+      
+      // network error
+      else {
+        setError("Server not reachable. Please try again.");
+      }
 
     }
-
   };
 
   return (
@@ -55,6 +66,7 @@ function Login() {
           type="text"
           placeholder="Username"
           value={username}
+          required
           onChange={(e) => setUsername(e.target.value)}
         />
 
@@ -62,6 +74,7 @@ function Login() {
           type="password"
           placeholder="Password"
           value={password}
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
 
