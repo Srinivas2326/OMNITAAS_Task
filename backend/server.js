@@ -3,21 +3,11 @@ const cors = require("cors");
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://omniitaas-task.vercel.app"
-];
-
+// Allow requests from anywhere (safe for this test project)
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error("CORS not allowed"), false);
-    }
-    return callback(null, true);
-  },
+  origin: "*",
   methods: ["GET", "POST"],
-  credentials: true
+  allowedHeaders: ["Content-Type"]
 }));
 
 app.use(express.json());
