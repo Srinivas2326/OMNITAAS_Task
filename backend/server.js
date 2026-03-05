@@ -3,36 +3,44 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://omniitaas-task.vercel.app"
+  ],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
+
 app.use(express.json());
 
+// Handle preflight requests
+app.options("*", cors());
 
 // Login API
 app.post("/login", (req, res) => {
 
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    if (username === "admin" && password === "admin") {
+  if (username === "admin" && password === "admin") {
 
-        return res.status(200).json({
-            message: "Login successful",
-            username: username
-        });
+    return res.status(200).json({
+      message: "Login successful",
+      username: username
+    });
 
-    } else {
+  } else {
 
-        return res.status(401).json({
-            message: "Invalid username or password"
-        });
+    return res.status(401).json({
+      message: "Invalid username or password"
+    });
 
-    }
+  }
 
 });
 
-
 const PORT = process.env.PORT || 5000;
 
-
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
